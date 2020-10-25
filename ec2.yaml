@@ -1,5 +1,4 @@
 ---
-#this example is taken from https://s3.us-west-2.amazonaws.com/cloudformation-templates-us-west-2/EC2InstanceWithSecurityGroupSample.template removed unnecessary instance types to simplify the example.
 AWSTemplateFormatVersion: '2010-09-09'
 Description: 'AWS CloudFormation Sample Template EC2InstanceWithSecurityGroupSample:
   Create an Amazon EC2 instance running the Amazon Linux AMI. The AMI is chosen based
@@ -64,6 +63,12 @@ Mappings:
     us-west-1:
       HVM64: ami-0ec6517f6edbf8044
       HVMG2: ami-0a7fc72dc0e51aa77
+    eu-west-1:
+      HVM64: ami-08935252a36e25f85
+      HVMG2: ami-0d5299b1c6112c3c7
+    us-east-2:
+      HVM64: ami-0cd3dfa4e37921605
+      HVMG2: NOT_SUPPORTED
 Resources:
   EC2Instance:
     Type: AWS::EC2::Instance
