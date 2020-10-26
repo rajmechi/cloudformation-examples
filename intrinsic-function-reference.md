@@ -1,7 +1,7 @@
 
 **Fn::FindInMap**
 
-!FindInMap [ MapName, TopLevelKey, SecondLevelKey ]\
+!FindInMap [ MapName, TopLevelKey, SecondLevelKey ]
 
 ```
 Mappings: 
