@@ -1,5 +1,6 @@
 
 **Fn::FindInMap**
+The intrinsic function Fn::FindInMap returns the value corresponding to keys in a two-level map that is declared in the Mappings section.
 
 !FindInMap [ MapName, TopLevelKey, SecondLevelKey ]
 
@@ -31,3 +32,37 @@ Resources:
         - HVM64
       InstanceType: m1.small
 ```
+
+**Fn::GetAtt**
+The Fn::GetAtt intrinsic function returns the value of an attribute from a resource in the template. For more information about GetAtt return values for a particular resource, refer to the documentation for that resource in the Resource and property reference. https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html
+
+!GetAtt logicalNameOfResource.attributeName
+
+```
+AWSTemplateFormatVersion: 2010-09-09
+Resources:
+  myELB:
+    Type: AWS::ElasticLoadBalancing::LoadBalancer
+    Properties:
+      AvailabilityZones:
+        - eu-west-1a
+      Listeners:
+        - LoadBalancerPort: '80'
+          InstancePort: '80'
+          Protocol: HTTP
+  myELBIngressGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: ELB ingress group
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          SourceSecurityGroupOwnerId: !GetAtt myELB.SourceSecurityGroup.OwnerAlias
+          SourceSecurityGroupName:
+            Fn::GetAtt:
+            - myELB
+            - SourceSecurityGroup.GroupName
+```
+
+
