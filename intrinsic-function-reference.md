@@ -100,6 +100,88 @@ AvailabilityZone: !Select
 
 The intrinsic function Fn::ImportValue returns the value of an output exported by another stack.
 
+```
+"Outputs" : {
+  "PublicSubnet" : {
+    "Description" : "The subnet ID to use for public web servers",
+    "Value" :  { "Ref" : "PublicSubnet" },
+    "Export" : { "Name" : {"Fn::Sub": "${AWS::StackName}-SubnetID" }}
+  },
+  "WebServerSecurityGroup" : {
+    "Description" : "The security group ID to use for public web servers",
+    "Value" :  { "Fn::GetAtt" : ["WebServerSecurityGroup", "GroupId"] },
+    "Export" : { "Name" : {"Fn::Sub": "${AWS::StackName}-SecurityGroupID" }}
+  }
+}
+```
+```
+"Resources" : {
+  "WebServerInstance" : {
+    "Type" : "AWS::EC2::Instance",
+    "Properties" : {
+      "InstanceType" : "t2.micro",
+      "ImageId" : "ami-a1b23456",
+      "NetworkInterfaces" : [{
+        "GroupSet" : [{"Fn::ImportValue" : {"Fn::Sub" : "${NetworkStackNameParameter}-SecurityGroupID"}}],
+        "AssociatePublicIpAddress" : "true",
+        "DeviceIndex" : "0",
+        "DeleteOnTermination" : "true",
+        "SubnetId" : {"Fn::ImportValue" : {"Fn::Sub" : "${NetworkStackNameParameter}-SubnetID"}}
+      }]
+    }
+  }
+}
+```
+
+You can't use the short form of !ImportValue when it contains a !Sub. The following example is valid for AWS CloudFormation, but not valid for YAML:
+
+**Fn::Join**
+The intrinsic function Fn::Join appends a set of values into a single value, separated by the specified delimiter. If a delimiter is the empty string, the set of values are concatenated with no delimiter.
+
+```
+!Join
+  - ''
+  - - 'arn:'
+    - !Ref AWS::Partition
+    - ':s3:::elasticbeanstalk-*-'
+    - !Ref 'AWS::AccountId'
+```
+For the Fn::Join list of values, you can use the following functions:
+
+Fn::Base64
+
+Fn::FindInMap
+
+Fn::GetAtt
+
+Fn::GetAZs
+
+Fn::If
+
+Fn::ImportValue
+
+Fn::Join
+
+Fn::Split
+
+Fn::Select
+
+Fn::Sub
+
+Ref
+
+
+**Fn::Select**
+The intrinsic function Fn::Select returns a single object from a list of objects by index.
+
+
+
+
+
+**Fn::Sub**
+
+Variables can be template parameter names, resource logical IDs, resource attributes, or a variable in a key-value map. 
+
 
 
 
