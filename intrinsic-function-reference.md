@@ -1,4 +1,3 @@
-
 **Fn::FindInMap**
 The intrinsic function Fn::FindInMap returns the value corresponding to keys in a two-level map that is declared in the Mappings section.
 
@@ -64,5 +63,48 @@ Resources:
             - myELB
             - SourceSecurityGroup.GroupName
 ```
+
+
+**Fn::GetAZs**
+
+The intrinsic function Fn::GetAZs returns an array that lists Availability Zones for a specified region in alaphabetical order. 
+
+!GetAZs region
+
+```
+mySubnet: 
+  Type: "AWS::EC2::Subnet"
+  Properties: 
+    VpcId: 
+      !Ref VPC
+    CidrBlock: 10.0.0.0/24
+    AvailabilityZone: 
+      Fn::Select: 
+        - 0
+        - Fn::GetAZs: ""
+```
+```
+AvailabilityZone: !Select 
+  - 0
+  - !GetAZs 
+    Ref: 'AWS::Region'
+```
+```
+AvailabilityZone: !Select 
+  - 0
+  - Fn::GetAZs: !Ref 'AWS::Region'
+```
+
+
+**Fn::ImportValue**
+
+The intrinsic function Fn::ImportValue returns the value of an output exported by another stack.
+
+
+
+
+
+
+
 
 
